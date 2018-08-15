@@ -1,0 +1,16 @@
+sudo: required
+
+language: generic
+
+services:
+  - docker
+
+before_install:
+  - cp .env.example .env
+
+install:
+  - docker build --tag salad/vtv-giai-tri-grabber .
+  - docker run --detach --publish 4000:4000 salad/vtv-giai-tri-grabber
+
+script:
+  - travis_retry curl --head --fail localhost:4000
