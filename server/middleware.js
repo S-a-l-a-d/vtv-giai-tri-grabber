@@ -6,7 +6,7 @@ const lusca = require("lusca");
 const express = require("express");
 const app = express();
 
-app.use(cors({ origin: process.env.ORIGIN, methods: "GET" }));
+app.use(cors({ origin: process.env.ORIGIN, methods: "GET,POST" }));
 app.use(bodyParser.json());
 app.use(
   session({
@@ -17,7 +17,6 @@ app.use(
 );
 app.use(
   lusca({
-    csrf: true,
     nosniff: true,
     referrerPolicy: "same-origin",
     xframe: "DENY",
