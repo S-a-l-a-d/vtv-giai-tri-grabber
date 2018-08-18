@@ -20,9 +20,7 @@ app.get("/", async (req, res) => {
     const indexHtml = (await fs.readFileAsync(
       path.join(rootDir, "index.html"),
       "utf8"
-    ))
-      .replace("%CSRF_TOKEN%", res.locals._csrf)
-      .replace(/%GA_TRACKING_ID%/g, process.env.GA_TRACKING_ID);
+    )).replace(/%GA_TRACKING_ID%/g, process.env.GA_TRACKING_ID);
 
     res.status(200).send(indexHtml);
   } catch (ex) {
