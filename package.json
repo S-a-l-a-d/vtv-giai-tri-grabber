@@ -43,7 +43,7 @@
     "clean-all": "rimraf build flow-typed/npm node_modules",
     "postinstall": "npm run flow-typed"
   },
-  "description": "An app that helps you get the video links from VTV Giai Tri",
+  "description": "An app that helps you get video links from VTV Giai Tri",
   "main": "server/index.js",
   "repository": {
     "type": "git",
