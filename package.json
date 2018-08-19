@@ -12,6 +12,7 @@
     "fetch-cookie": "^0.7.2",
     "lusca": "^1.6.1",
     "node-fetch": "^2.2.0",
+    "nprogress": "^0.2.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-scripts": "1.1.4",
