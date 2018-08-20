@@ -6,6 +6,14 @@ const nodeFetch = require("node-fetch");
 const fetch = require("fetch-cookie/node-fetch")(nodeFetch);
 const app = express();
 const dotenv = require("dotenv");
+
+const {
+  VTV_GIAI_TRI_URL,
+  VTV_GIAI_TRI_API_PATH,
+  TITLE_URL_PATTERN,
+  TITLE_ID_PATTERN,
+  ENCRYPTION_KEY_PATTERN
+} = require("./constants").constants;
 const rootDir = path.join(__dirname, "..", "build");
 
 fs.readFileAsync = util.promisify(fs.readFile);
@@ -33,18 +41,33 @@ app.get("/", async (req, res) => {
 });
 
 app.post("/api/grabber", async (req, res) => {
+  if (!TITLE_URL_PATTERN.test(req.body.titleUrl)) {
+    res.status(200).send({ key: "", episodes: [] });
+
+    return;
+  }
+
   try {
     const html = await (await fetch(req.body.titleUrl)).text();
-    const titleId = html.match(/title-info-wrap"\sid="(?<id>\d+)"/).groups.id;
+    const titleIdMatch = html.match(TITLE_ID_PATTERN);
+
+    if (titleIdMatch === null) {
+      res.status(200).send({ key: "", episodes: [] });
+
+      return;
+    }
+
+    const titleId = titleIdMatch.groups.id;
     const titleData = await (await fetch(
-      `https://www.vtvgiaitri.vn/api/v1/title/${titleId}/season/${titleId}`
+      `${VTV_GIAI_TRI_URL}${VTV_GIAI_TRI_API_PATH}/title/${titleId}/season/${titleId}`
     )).json();
     const playlistData = await (await fetch(
       titleData.data.episodes[0].files[0].url
     )).text();
-    const key = playlistData.match(/sleng_(?<key>.+)\.m3u8/).groups.key;
+    const encryptionKey = playlistData.match(ENCRYPTION_KEY_PATTERN).groups
+      .encryptionKey;
 
-    res.status(200).send({ key, episodes: titleData.data.episodes });
+    res.status(200).send({ encryptionKey, episodes: titleData.data.episodes });
   } catch (ex) {
     res.status(500).send("Internal Server Error");
   }

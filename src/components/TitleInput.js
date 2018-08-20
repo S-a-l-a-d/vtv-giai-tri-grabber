@@ -6,6 +6,7 @@ import { compose, withState, withHandlers, shouldUpdate } from "recompose";
 import NProgress from "nprogress";
 
 import { grabTitleData } from "../common/helpers";
+import { TITLE_URL_PATTERN } from "../common/constants";
 
 const Div = styled.div`
   text-align: center;
@@ -37,6 +38,8 @@ const enhance = compose(
     },
     onSubmit: props => async (event: Event) => {
       event.preventDefault();
+
+      if (!TITLE_URL_PATTERN.test(props.value)) return;
 
       NProgress.start();
 

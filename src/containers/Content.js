@@ -21,8 +21,8 @@ const enhance = compose(
     (props, nextProps) =>
       (Object.keys(props.data).length === 0 &&
         Object.keys(nextProps.data).length > 0) ||
-      props.data.key !== nextProps.data.key ||
-      (props.data.key === nextProps.data.key &&
+      props.data.encryptionKey !== nextProps.data.encryptionKey ||
+      (props.data.encryptionKey === nextProps.data.encryptionKey &&
         props.data.episodes.length !== nextProps.data.episodes.length)
   )
 );
