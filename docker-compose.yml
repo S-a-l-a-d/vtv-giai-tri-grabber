@@ -1,8 +1,8 @@
-version: '2.1'
+version: "3"
 
 services:
   vtv-giai-tri-grabber:
-    image: vtv-giai-tri-grabber
+    image: salad/vtv-giai-tri-grabber
     build: .
     environment:
       NODE_ENV: production
