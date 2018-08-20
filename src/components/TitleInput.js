@@ -2,15 +2,21 @@
 
 import React from "react";
 import styled from "styled-components";
-import { compose, withState, withHandlers, shouldUpdate } from "recompose";
+import {
+  compose,
+  withState,
+  withHandlers,
+  shouldUpdate,
+  onlyUpdateForKeys
+} from "recompose";
 import NProgress from "nprogress";
-
-import Resolution from "./Resolution";
 
 import { grabTitleData } from "../common/helpers";
 import { TITLE_URL_PATTERN } from "../common/constants";
 
 const Div = styled.div`
+  margin-bottom: 1rem;
+
   text-align: center;
 `;
 const Input = styled.input`
@@ -51,7 +57,8 @@ const enhance = compose(
 
       NProgress.done();
     }
-  })
+  }),
+  onlyUpdateForKeys(["value"])
 );
 
 type Props = {
@@ -70,7 +77,6 @@ export default enhance(({ value, handleChange, handleSubmit }: Props) => (
         value={value}
         onChange={handleChange}
       />
-      <Resolution />
       <Button type="submit">Grab</Button>
     </form>
   </Div>
