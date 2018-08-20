@@ -19,7 +19,7 @@ const rootDir = path.join(__dirname, "..", "build");
 fs.readFileAsync = util.promisify(fs.readFile);
 dotenv.config();
 
-app.use(require("./middleware").default);
+app.use(require("./middleware").middleware);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(rootDir, { index: false }));

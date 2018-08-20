@@ -25,4 +25,4 @@ app.use(
 );
 app.use(compression());
 
-exports.default = app;
+exports.middleware = app;
