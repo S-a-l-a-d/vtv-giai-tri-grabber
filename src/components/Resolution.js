@@ -9,6 +9,7 @@ import { RESOLUTION } from "../common/constants";
 const Div = styled.div`
   margin-bottom: 1rem;
 
+  font-size: 2rem;
   text-align: center;
 `;
 const Select = styled.select`
@@ -32,6 +33,7 @@ type Props = {
 
 export default enhance(({ resolution, handleChange }: Props) => (
   <Div>
+    Độ phân giải{" "}
     <Select value={resolution} onChange={handleChange}>
       <option value={RESOLUTION.LOW}>360p</option>
       <option value={RESOLUTION.MEDIUM}>480p</option>

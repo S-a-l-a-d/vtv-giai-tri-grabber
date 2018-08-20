@@ -6,6 +6,7 @@ import { compose, withState, withHandlers, shouldUpdate } from "recompose";
 
 import TitleInput from "../components/TitleInput";
 import Resolution from "../components/Resolution";
+import TitleOutput from "../components/TitleOutput";
 
 import { RESOLUTION } from "../common/constants";
 
@@ -25,7 +26,7 @@ const enhance = compose(
     }
   }),
   shouldUpdate((props, nextProps) => {
-    const dataRetrieved =
+    const initialDataRetrieved =
       Object.keys(props.data).length === 0 &&
       Object.keys(nextProps.data).length > 0;
     const titleChanged =
@@ -38,7 +39,7 @@ const enhance = compose(
     const resolutionChanged = props.resolution !== nextProps.resolution;
 
     return (
-      dataRetrieved ||
+      initialDataRetrieved ||
       titleChanged ||
       numTitleEpisodesChanged ||
       resolutionChanged
@@ -47,7 +48,16 @@ const enhance = compose(
 );
 
 type Props = {
-  data: {},
+  data: {
+    encryptionKey: string,
+    episodes: {
+      name: string,
+      files: {
+        url: string
+      }[],
+      coverMedium: string
+    }[]
+  },
   resolution: string,
   bindData: (data: {}) => void,
   bindResolution: (resolution: string) => void
@@ -59,6 +69,7 @@ export default enhance(
       <Main>
         <TitleInput bindData={bindData} />
         <Resolution resolution={resolution} bindResolution={bindResolution} />
+        <TitleOutput data={data} resolution={resolution} />
       </Main>
     </React.Fragment>
   )
