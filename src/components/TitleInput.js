@@ -33,10 +33,10 @@ const Button = shouldUpdate(() => false)(styled.button`
 const enhance = compose(
   withState("value", "updateValue", ""),
   withHandlers({
-    onChange: props => (event: SyntheticInputEvent<EventTarget>) => {
+    handleChange: props => (event: SyntheticInputEvent<EventTarget>) => {
       props.updateValue(event.target.value);
     },
-    onSubmit: props => async (event: Event) => {
+    handleSubmit: props => async (event: Event) => {
       event.preventDefault();
 
       if (!TITLE_URL_PATTERN.test(props.value)) return;
@@ -55,18 +55,18 @@ const enhance = compose(
 type Props = {
   bindData: (data: {}) => void,
   value: string,
-  onChange: (event: SyntheticInputEvent<EventTarget>) => void,
-  onSubmit: (event: Event) => Promise<void>
+  handleChange: (event: SyntheticInputEvent<EventTarget>) => void,
+  handleSubmit: (event: Event) => Promise<void>
 };
 
-export default enhance(({ value, onChange, onSubmit }: Props) => (
+export default enhance(({ value, handleChange, handleSubmit }: Props) => (
   <Div>
-    <form onSubmit={onSubmit}>
+    <form onSubmit={handleSubmit}>
       <Input
         type="text"
         placeholder="https://www.vtvgiaitri.vn/title/quynh-bup-be"
         value={value}
-        onChange={onChange}
+        onChange={handleChange}
       />
       <Button type="submit">Grab</Button>
     </form>
