@@ -18,7 +18,8 @@ const Select = styled.select`
 const enhance = compose(
   withHandlers({
     handleChange: props => (event: SyntheticEvent<HTMLSelectElement>) => {
-      props.bindResolution(event.target.value);
+      if (event.target instanceof HTMLSelectElement)
+        props.bindResolution(event.target.value);
     }
   }),
   onlyUpdateForKeys(["resolution"])
