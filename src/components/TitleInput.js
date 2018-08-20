@@ -44,6 +44,9 @@ const enhance = compose(
     handleChange: props => (event: SyntheticInputEvent<HTMLInputElement>) => {
       props.updateValue(event.target.value);
     },
+    handleFocus: props => (event: SyntheticInputEvent<HTMLInputElement>) => {
+      event.target.select();
+    },
     handleSubmit: props => async (event: Event) => {
       event.preventDefault();
 
@@ -65,19 +68,23 @@ type Props = {
   bindData: (data: {}) => void,
   value: string,
   handleChange: (event: SyntheticInputEvent<HTMLInputElement>) => void,
+  handleFocus: (event: SyntheticInputEvent<HTMLInputElement>) => void,
   handleSubmit: (event: Event) => Promise<void>
 };
 
-export default enhance(({ value, handleChange, handleSubmit }: Props) => (
-  <Div>
-    <form onSubmit={handleSubmit}>
-      <Input
-        type="text"
-        placeholder="https://www.vtvgiaitri.vn/title/quynh-bup-be"
-        value={value}
-        onChange={handleChange}
-      />
-      <Button type="submit">Grab</Button>
-    </form>
-  </Div>
-));
+export default enhance(
+  ({ value, handleChange, handleFocus, handleSubmit }: Props) => (
+    <Div>
+      <form onSubmit={handleSubmit}>
+        <Input
+          type="text"
+          placeholder="https://www.vtvgiaitri.vn/title/quynh-bup-be"
+          value={value}
+          onChange={handleChange}
+          onFocus={handleFocus}
+        />
+        <Button type="submit">Triển</Button>
+      </form>
+    </Div>
+  )
+);
