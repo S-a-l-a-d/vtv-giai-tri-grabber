@@ -3,6 +3,8 @@
 import React from "react";
 import styled from "styled-components";
 
+import { VTV_GIAI_TRI_URL } from "../common/constants";
+
 const Img = styled.img`
   width: 14rem;
 
@@ -12,7 +14,12 @@ const Img = styled.img`
 type Props = {
   name: string,
   cover: string,
-  url: string
+  url: string,
+  watch: string
 };
 
-export default ({ name, cover, url }: Props) => <Img alt={name} src={cover} />;
+export default ({ name, cover, url, watch }: Props) => (
+  <a title={name} href={VTV_GIAI_TRI_URL + watch} target="_blank">
+    <Img alt={name} src={cover} />
+  </a>
+);
