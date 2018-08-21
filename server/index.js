@@ -18,13 +18,12 @@ const rootDir = path.join(__dirname, "..", "build");
 
 fs.readFileAsync = util.promisify(fs.readFile);
 dotenv.config();
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 app.use(require("./middleware").middleware);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(rootDir, { index: false }));
-} else {
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 }
 
 app.get("/", async (req, res) => {
