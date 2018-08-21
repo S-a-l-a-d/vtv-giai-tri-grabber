@@ -4,6 +4,7 @@ import React from "react";
 import styled from "styled-components";
 import { compose, withState, withHandlers, shouldUpdate } from "recompose";
 
+import HowTo from "../components/HowTo";
 import TitleInput from "../components/TitleInput";
 import Resolution from "../components/Resolution";
 import TitleOutput from "../components/TitleOutput";
@@ -61,6 +62,7 @@ type Props = {
 export default enhance(
   ({ data, resolution, bindData, bindResolution }: Props) => (
     <React.Fragment>
+      <HowTo />
       <Main>
         <TitleInput bindData={bindData} />
         <Resolution resolution={resolution} bindResolution={bindResolution} />
