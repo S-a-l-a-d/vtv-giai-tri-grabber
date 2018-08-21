@@ -8,7 +8,7 @@ import Box from "./Box";
 
 import { transliterate } from "../common/helpers";
 
-type Props = {
+type IncomingProps = {
   data: {
     encryptionKey: string,
     episodes: {
@@ -26,35 +26,34 @@ const Div = styled.div`
   text-align: center;
 `;
 
-const enhance = mapProps((props: Props) => ({
-  titleName: Object.keys(props.data).length
+const enhance = mapProps(({ data, resolution }: IncomingProps) => ({
+  titleName: Object.keys(data).length
     ? `${transliterate(
-        props.data.episodes[0].name.substring(
+        data.episodes[0].name.substring(
           0,
-          props.data.episodes[0].name.indexOf("-") - 1
+          data.episodes[0].name.indexOf("-") - 1
         )
       )}`
     : "",
-  episodes: Object.keys(props.data).length
-    ? props.data.episodes.map(episode => ({
+  episodes: Object.keys(data).length
+    ? data.episodes.map(episode => ({
         name: transliterate(episode.name),
         cover: episode.coverMedium,
         url: episode.files[0].url.replace(
           "playlist.m3u8",
-          `chunklist_${props.resolution}_sleng_${props.data.encryptionKey}.m3u8`
+          `chunklist_${resolution}_sleng_${data.encryptionKey}.m3u8`
         )
       }))
     : []
 }));
 
+type OutgoingProps = {
+  titleName: string,
+  episodes: { name: string, cover: string, url: string }[]
+};
+
 export default enhance(
-  ({
-    titleName,
-    episodes
-  }: {
-    titleName: string,
-    episodes: { name: string, cover: string, url: string }[]
-  }) =>
+  ({ titleName, episodes }: OutgoingProps) =>
     episodes.length ? (
       <Div>
         <Box
