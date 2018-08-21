@@ -17,21 +17,18 @@ const rootDir = path.join(__dirname, "..", "build");
 
 dotenv.config();
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-
 app.use(require("./middleware").middleware);
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(rootDir, { index: false }));
-}
-
-app.get("/", async (req, res) => {
+  const indexPath = path.join(rootDir, "index.html");
   const indexHtml = fs
-    .readFileSync(path.join(rootDir, "index.html"), "utf8")
+    .readFileSync(indexPath, "utf8")
     .replace(/%ORIGIN%/g, process.env.ORIGIN)
     .replace(/%GA_TRACKING_ID%/g, process.env.GA_TRACKING_ID);
 
-  res.status(200).send(indexHtml);
-});
+  fs.writeFileSync(indexPath, indexHtml, "utf8");
+  app.use(express.static(rootDir));
+}
 
 app.post("/api/grabber", async (req, res) => {
   if (!TITLE_URL_PATTERN.test(req.body.titleUrl)) {
