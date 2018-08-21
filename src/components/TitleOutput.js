@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { mapProps } from "recompose";
 
 import LinkSection from "./LinkSection";
+import PreviewSection from "./PreviewSection";
 
 import { transliterate } from "../common/helpers";
 
@@ -59,6 +60,7 @@ export default enhance(
     props.episodes.length ? (
       <Div>
         <LinkSection {...props} />
+        <PreviewSection episodes={props.episodes} />
       </Div>
     ) : null
 );
