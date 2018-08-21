@@ -27,6 +27,7 @@ if (process.env.NODE_ENV === "production") {
 app.get("/", async (req, res) => {
   const indexHtml = fs
     .readFileSync(path.join(rootDir, "index.html"), "utf8")
+    .replace(/%ORIGIN%/g, process.env.ORIGIN)
     .replace(/%GA_TRACKING_ID%/g, process.env.GA_TRACKING_ID);
 
   res.status(200).send(indexHtml);
