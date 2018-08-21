@@ -9,6 +9,7 @@ import Resolution from "../components/Resolution";
 import TitleOutput from "../components/TitleOutput";
 
 import { RESOLUTION } from "../common/constants";
+import type { ServerEpisode } from "../common/types";
 
 const Main = styled.main`
   margin: 3rem 10%;
@@ -50,14 +51,7 @@ const enhance = compose(
 type Props = {
   data: {
     encryptionKey: string,
-    episodes: {
-      id: number,
-      name: string,
-      files: {
-        url: string
-      }[],
-      coverMedium: string
-    }[]
+    episodes: ServerEpisode[]
   },
   resolution: string,
   bindData: (data: {}) => void,

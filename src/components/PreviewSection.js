@@ -5,12 +5,14 @@ import styled from "styled-components";
 
 import PreviewBox from "./PreviewBox";
 
+import type { ClientEpisode } from "../common/types";
+
 const Div = styled.div`
   text-align: initial;
 `;
 
 type Props = {
-  episodes: { id: number, name: string, cover: string, url: string }[]
+  episodes: ClientEpisode[]
 };
 
 export default ({ episodes }: Props) => (

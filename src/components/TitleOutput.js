@@ -8,18 +8,12 @@ import LinkSection from "./LinkSection";
 import PreviewSection from "./PreviewSection";
 
 import { transliterate } from "../common/helpers";
+import type { ServerEpisode, ClientEpisode } from "../common/types";
 
 type IncomingProps = {
   data: {
     encryptionKey: string,
-    episodes: {
-      id: number,
-      name: string,
-      files: {
-        url: string
-      }[],
-      coverMedium: string
-    }[]
+    episodes: ServerEpisode[]
   },
   resolution: string
 };
@@ -45,14 +39,15 @@ const enhance = mapProps(({ data, resolution }: IncomingProps) => ({
         url: episode.files[0].url.replace(
           "playlist.m3u8",
           `chunklist_${resolution}_sleng_${data.encryptionKey}.m3u8`
-        )
+        ),
+        watch: episode.watchLinkV2
       }))
     : []
 }));
 
 type OutgoingProps = {
   titleName: string,
-  episodes: { id: number, name: string, cover: string, url: string }[]
+  episodes: ClientEpisode[]
 };
 
 export default enhance(

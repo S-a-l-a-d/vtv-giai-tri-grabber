@@ -4,9 +4,11 @@ import React from "react";
 
 import LinkBox from "./LinkBox";
 
+import type { ClientEpisode } from "../common/types";
+
 type OutgoingProps = {
   titleName: string,
-  episodes: { id: number, name: string, cover: string, url: string }[]
+  episodes: ClientEpisode[]
 };
 
 export default ({ titleName, episodes }: OutgoingProps) => (
