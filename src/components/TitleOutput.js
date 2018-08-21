@@ -60,7 +60,7 @@ export default enhance(
           heading="Danh sách liên kết"
           content={episodes
             .map(episode => episode.url)
-            .reduce((prev, curr) => `${prev}\n${curr}`)}
+            .reduce((prev, curr) => `${prev}\r\n${curr}`)}
           filename={`${titleName}.txt`}
         />
         <Box
