@@ -19,14 +19,8 @@ export default ({ episodes }: Props) => (
   <div>
     <h2>Không nhớ coi tới đâu rồi hả? Xuống dưới bấm coi thử nhé.</h2>
     <Div>
-      {episodes.map(({ id, name, cover, url, watch }) => (
-        <PreviewBox
-          key={id}
-          name={name}
-          cover={cover}
-          url={url}
-          watch={watch}
-        />
+      {episodes.map(episode => (
+        <PreviewBox key={episode.id} {...episode} />
       ))}
     </Div>
   </div>
