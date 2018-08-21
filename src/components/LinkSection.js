@@ -7,18 +7,17 @@ import LinkBox from "./LinkBox";
 import type { ClientEpisode } from "../common/types";
 
 type OutgoingProps = {
-  titleName: string,
   episodes: ClientEpisode[]
 };
 
-export default ({ titleName, episodes }: OutgoingProps) => (
+export default ({ episodes }: OutgoingProps) => (
   <div>
     <LinkBox
       heading="Danh sách liên kết"
       content={episodes
         .map(episode => episode.url)
         .reduce((prev, curr) => `${prev}\r\n${curr}`)}
-      filename={`${titleName}.txt`}
+      filename={"links.txt"}
     />
     <LinkBox
       heading="Không biết làm gì với đống đó hả? Thôi cho cái này nè."
@@ -30,7 +29,7 @@ export default ({ titleName, episodes }: OutgoingProps) => (
             }.mkv"`
         )
         .reduce((prev, curr) => `${prev}\r\n${curr}`, "@echo off\r\n")}
-      filename={`${titleName}.cmd`}
+      filename={"script.cmd"}
     />
     <LinkBox
       heading="Ủa xài Linux à? Vậy thôi lấy cái này đi."
@@ -42,7 +41,7 @@ export default ({ titleName, episodes }: OutgoingProps) => (
             }.mkv'`
         )
         .reduce((prev, curr) => `${prev}\n${curr}`, "#!/bin/bash\n")}
-      filename={`${titleName}.sh`}
+      filename={"script.sh"}
     />
   </div>
 );

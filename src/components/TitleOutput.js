@@ -23,19 +23,13 @@ const Div = styled.div`
 `;
 
 const enhance = mapProps(({ data, resolution }: IncomingProps) => ({
-  titleName: Object.keys(data).length
-    ? `${transliterate(
-        data.episodes[0].name.substring(
-          0,
-          data.episodes[0].name.indexOf("-") - 1
-        )
-      )}`
-    : "",
   episodes: Object.keys(data).length
     ? data.episodes.map(episode => ({
         id: episode.id,
         name: transliterate(episode.name),
-        cover: episode.coverMedium,
+        cover:
+          episode.coverMedium ||
+          "https://obj-cdn-static.vtvgiaitri.vn/assets/img/logo.png",
         url: episode.files[0].url.replace(
           "playlist.m3u8",
           `chunklist_${resolution}_sleng_${data.encryptionKey}.m3u8`
@@ -46,7 +40,6 @@ const enhance = mapProps(({ data, resolution }: IncomingProps) => ({
 }));
 
 type OutgoingProps = {
-  titleName: string,
   episodes: ClientEpisode[]
 };
 
