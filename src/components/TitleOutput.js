@@ -70,7 +70,7 @@ export default enhance(
               episode =>
                 `ffmpeg -i "${episode.url}" -vcodec "copy" -acodec "copy" "${
                   episode.name
-                }.mp4"`
+                }.mkv"`
             )
             .reduce((prev, curr) => `${prev}\r\n${curr}`, "@echo off\r\n")}
           filename={`${titleName}.cmd`}
@@ -82,7 +82,7 @@ export default enhance(
               episode =>
                 `ffmpeg -i '${episode.url}' -vcodec 'copy' -acodec 'copy' '${
                   episode.name
-                }.mp4'`
+                }.mkv'`
             )
             .reduce((prev, curr) => `${prev}\n${curr}`, "#!/bin/bash\n")}
           filename={`${titleName}.sh`}
