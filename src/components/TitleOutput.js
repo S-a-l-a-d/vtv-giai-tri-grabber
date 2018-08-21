@@ -4,7 +4,7 @@ import React from "react";
 import styled from "styled-components";
 import { mapProps } from "recompose";
 
-import Box from "./Box";
+import LinkSection from "./LinkSection";
 
 import { transliterate } from "../common/helpers";
 
@@ -53,40 +53,10 @@ type OutgoingProps = {
 };
 
 export default enhance(
-  ({ titleName, episodes }: OutgoingProps) =>
-    episodes.length ? (
+  (props: OutgoingProps) =>
+    props.episodes.length ? (
       <Div>
-        <Box
-          heading="Danh sách liên kết"
-          content={episodes
-            .map(episode => episode.url)
-            .reduce((prev, curr) => `${prev}\r\n${curr}`)}
-          filename={`${titleName}.txt`}
-        />
-        <Box
-          heading="Không biết làm gì với đống đó hả? Thôi cho cái này nè."
-          content={episodes
-            .map(
-              episode =>
-                `ffmpeg -i "${episode.url}" -vcodec "copy" -acodec "copy" "${
-                  episode.name
-                }.mkv"`
-            )
-            .reduce((prev, curr) => `${prev}\r\n${curr}`, "@echo off\r\n")}
-          filename={`${titleName}.cmd`}
-        />
-        <Box
-          heading="Ủa xài Linux à? Vậy thôi lấy cái này đi."
-          content={episodes
-            .map(
-              episode =>
-                `ffmpeg -i '${episode.url}' -vcodec 'copy' -acodec 'copy' '${
-                  episode.name
-                }.mkv'`
-            )
-            .reduce((prev, curr) => `${prev}\n${curr}`, "#!/bin/bash\n")}
-          filename={`${titleName}.sh`}
-        />
+        <LinkSection {...props} />
       </Div>
     ) : null
 );
