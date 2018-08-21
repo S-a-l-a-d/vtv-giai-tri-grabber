@@ -21,7 +21,6 @@ const Img = styled.img`
 const enhance = onlyUpdateForKeys(["id"]);
 
 type Props = {
-  id: number,
   name: string,
   cover: string,
   watch: string
