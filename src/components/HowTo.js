@@ -4,7 +4,7 @@ import React from "react";
 import styled from "styled-components";
 
 const Div = styled.div`
-  margin: 1rem 0 0 1rem;
+  margin: 1rem 1rem 0 1rem;
 `;
 
 export default () => (
