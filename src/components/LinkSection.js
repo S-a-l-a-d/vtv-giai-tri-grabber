@@ -6,7 +6,7 @@ import LinkBox from "./LinkBox";
 
 type OutgoingProps = {
   titleName: string,
-  episodes: { name: string, cover: string, url: string }[]
+  episodes: { id: number, name: string, cover: string, url: string }[]
 };
 
 export default ({ titleName, episodes }: OutgoingProps) => (

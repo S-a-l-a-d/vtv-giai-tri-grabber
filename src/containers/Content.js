@@ -51,6 +51,7 @@ type Props = {
   data: {
     encryptionKey: string,
     episodes: {
+      id: number,
       name: string,
       files: {
         url: string
