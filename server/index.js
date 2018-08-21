@@ -35,7 +35,7 @@ app.get("/", async (req, res) => {
 
 app.post("/api/grabber", async (req, res) => {
   if (!TITLE_URL_PATTERN.test(req.body.titleUrl)) {
-    res.status(200).send({ key: "", episodes: [] });
+    res.status(200).send({ encryptionKey: "", episodes: [] });
 
     return;
   }
@@ -45,7 +45,7 @@ app.post("/api/grabber", async (req, res) => {
     const titleIdMatch = html.match(TITLE_ID_PATTERN);
 
     if (titleIdMatch === null) {
-      res.status(200).send({ key: "", episodes: [] });
+      res.status(200).send({ encryptionKey: "", episodes: [] });
 
       return;
     }
