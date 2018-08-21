@@ -26,7 +26,7 @@ const enhance = mapProps(({ data, resolution }: IncomingProps) => ({
   episodes: Object.keys(data).length
     ? data.episodes.map(episode => ({
         id: episode.id,
-        name: transliterate(episode.name),
+        name: episode.name ? transliterate(episode.name) : "video",
         cover:
           episode.coverMedium ||
           "https://obj-cdn-static.vtvgiaitri.vn/assets/img/logo.png",

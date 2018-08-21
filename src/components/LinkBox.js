@@ -2,7 +2,7 @@
 
 import React from "react";
 import styled from "styled-components";
-import { onlyUpdateForKeys, shouldUpdate } from "recompose";
+import { onlyUpdateForKeys } from "recompose";
 import DownloadLink from "react-download-link";
 
 const Div = styled.div`
@@ -22,9 +22,9 @@ const TextArea = onlyUpdateForKeys(["value"])(styled.textarea`
 
   resize: vertical;
 `);
-const SubDiv = shouldUpdate(() => false)(styled.div`
+const SubDiv = styled.div`
   text-align: right;
-`);
+`;
 
 type Props = {
   heading: string,
