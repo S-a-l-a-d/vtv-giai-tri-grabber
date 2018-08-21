@@ -11,6 +11,8 @@ import {
 } from "recompose";
 import NProgress from "nprogress";
 
+import InputUrl from "./InputUrl";
+
 import { grabTitleData } from "../common/helpers";
 import { TITLE_URL_PATTERN } from "../common/constants";
 
@@ -18,21 +20,6 @@ const Div = styled.div`
   margin-bottom: 1rem;
 
   text-align: center;
-`;
-const Input = styled.input`
-  width: 70%;
-
-  margin-right: 0.5rem;
-  padding-bottom: 0.15rem;
-
-  border-left: 0;
-  border-top: 0;
-  border-right: 0;
-  border-bottom: 1px solid #000;
-
-  outline: 0;
-
-  font-size: 2rem;
 `;
 const Button = shouldUpdate(() => false)(styled.button`
   font-size: 2rem;
@@ -43,9 +30,6 @@ const enhance = compose(
   withHandlers({
     handleChange: props => (event: SyntheticInputEvent<HTMLInputElement>) => {
       props.updateValue(event.target.value);
-    },
-    handleFocus: props => (event: SyntheticInputEvent<HTMLInputElement>) => {
-      event.target.select();
     },
     handleSubmit: props => async (event: Event) => {
       event.preventDefault();
@@ -76,13 +60,7 @@ export default enhance(
   ({ value, handleChange, handleFocus, handleSubmit }: Props) => (
     <Div>
       <form onSubmit={handleSubmit}>
-        <Input
-          type="text"
-          placeholder="https://www.vtvgiaitri.vn/title/quynh-bup-be"
-          value={value}
-          onChange={handleChange}
-          onFocus={handleFocus}
-        />
+        <InputUrl value={value} handleChange={handleChange} />
         <Button type="submit">Triển</Button>
       </form>
     </Div>
