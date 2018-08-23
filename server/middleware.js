@@ -6,6 +6,8 @@ const lusca = require("lusca");
 const express = require("express");
 const app = express();
 
+const routes = require("./routes").routes;
+
 app.use(cors({ origin: process.env.ORIGIN, methods: "GET,POST" }));
 app.use(bodyParser.json());
 app.use(
@@ -24,5 +26,6 @@ app.use(
   })
 );
 app.use(compression());
+app.use(routes);
 
 exports.middleware = app;
