@@ -3,11 +3,11 @@ const fetch = require("fetch-cookie/node-fetch")(nodeFetch);
 
 /**
  *
- * Returns a new string with diacritics removed.
+ * Remove Vietnamese diacritics from a string.
  *
- * @param {string} str
+ * @param {string} str A string whose diacritics will be removed.
  *
- * @returns {string}
+ * @returns {string} A string with diacritics removed.
  */
 
 const transliterate = str => {
@@ -33,42 +33,49 @@ const transliterate = str => {
  *
  * Gets the titles from VTV Giai Tri from `page` to the end.
  *
- * @param {string} genre
- * @param {[]} result
- * @param {number} page
+ * @param {string} genre A title genre.
+ * @param {number} page A start page number.
  *
- * @returns {[]}
+ * @returns {[]} An array of titles.
  */
 
-const fetchTitles = async (genre, result, page) => {
-  const responseData = await (await fetch(
+const fetchTitles = async (genre, page) => {
+  const responseBodies = [];
+  const firstResponseBody = await (await fetch(
     `https://www.vtvgiaitri.vn/api/v1/title/genre/${genre}?page=${page}`
   )).json();
+  let currentPage = firstResponseBody.data.pagination.currentPage + 1;
 
-  if (page < responseData.data.pagination.totalPages) {
-    return [
-      ...result,
-      ...responseData.data.titles,
-      ...(await fetchTitles(genre, result, page + 1))
-    ];
+  // Need to send requests one by one as sending multiple requests at once will
+  // trigger the anti-DDoS system of the API server.
+  while (currentPage <= firstResponseBody.data.pagination.totalPages) {
+    responseBodies.push(
+      await (await fetch(
+        `https://www.vtvgiaitri.vn/api/v1/title/genre/${genre}?page=${currentPage}`
+      )).json()
+    );
+
+    currentPage++;
   }
 
-  return [...result, ...responseData.data.titles];
+  return firstResponseBody.data.titles.concat(
+    ...responseBodies.map(responseBody => responseBody.data.titles)
+  );
 };
 
 /**
  *
- * Gets the titles from VTV Giai Tri from `page` to the end sorted alphabetically by names.
+ * Gets the titles from VTV Giai Tri from `page` to the end
+ * sorted alphabetically by name.
  *
- * @param {string} genre
- * @param {number} page
+ * @param {string} genre A title genre.
+ * @param {number} page A start page number.
  *
- * @returns {[]}
+ * @returns {[]} An array of titles sorted by name.
  */
 
 const getSortedTitles = async (genre, page) => {
-  const result = [];
-  const titles = await fetchTitles(genre, result, page);
+  const titles = await fetchTitles(genre, page);
 
   return titles.sort((currentTitle, nextTitle) => {
     const currentTitleName = transliterate(currentTitle.title);
