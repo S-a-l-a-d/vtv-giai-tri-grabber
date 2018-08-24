@@ -85,7 +85,7 @@ router.get(
 );
 
 router.get(
-  `${API_PATH}/titles/:titleId/:seasonId`,
+  `${API_PATH}/titles/:titleId/seasons/:seasonId`,
   asyncHandler(async (req, res) => {
     const titleId = req.params.titleId;
     const seasonId = req.params.seasonId;
