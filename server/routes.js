@@ -6,6 +6,7 @@ const path = require("path");
 
 const router = Router();
 const {
+  API_PATH,
   VTV_GIAI_TRI_URL,
   VTV_GIAI_TRI_API_PATH,
   TITLE_URL_PATTERN,
@@ -20,7 +21,7 @@ const fs = require("./common/promisified-fs").promisifiedFs;
 const dataDir = path.join(__dirname, "data");
 
 router.post(
-  "/api/grabber",
+  `${API_PATH}/grabber`,
   asyncHandler(async (req, res) => {
     if (!TITLE_URL_PATTERN.test(req.body.titleUrl)) {
       res.status(HTTP_STATUS_CODE.OK).send({ encryptionKey: "", episodes: [] });
@@ -42,7 +43,8 @@ router.post(
 
       const titleId = titleIdMatch.groups.id;
       const titleData = await (await fetch(
-        `${VTV_GIAI_TRI_URL}${VTV_GIAI_TRI_API_PATH}/title/${titleId}/season/${titleId}`
+        `${VTV_GIAI_TRI_URL +
+          VTV_GIAI_TRI_API_PATH}/title/${titleId}/season/${titleId}`
       )).json();
       const playlistData = await (await fetch(
         titleData.data.episodes[0].files[0].url
@@ -62,7 +64,7 @@ router.post(
 );
 
 router.get(
-  "/api/titles",
+  `${API_PATH}/titles`,
   asyncHandler(async (req, res) => {
     const genre = req.query.genre;
 
@@ -82,8 +84,43 @@ router.get(
   })
 );
 
+router.get(
+  `${API_PATH}/titles/:titleId/:seasonId`,
+  asyncHandler(async (req, res) => {
+    const titleId = req.params.titleId;
+    const seasonId = req.params.seasonId;
+
+    if (isNaN(titleId) || isNaN(seasonId)) {
+      res.status(HTTP_STATUS_CODE.OK).send({ encryptionKey: "", episodes: [] });
+
+      return;
+    }
+
+    const titleResponse = await (await fetch(
+      `${VTV_GIAI_TRI_URL +
+        VTV_GIAI_TRI_API_PATH}/title/${titleId}/season/${seasonId}`
+    )).json();
+
+    if (titleResponse.code !== HTTP_STATUS_CODE.OK) {
+      res.status(HTTP_STATUS_CODE.OK).send({ encryptionKey: "", episodes: [] });
+
+      return;
+    }
+
+    const playlistResponse = await (await fetch(
+      titleResponse.data.episodes[0].files[0].url
+    )).text();
+    const encryptionKey = playlistResponse.match(ENCRYPTION_KEY_PATTERN).groups
+      .encryptionKey;
+
+    res
+      .status(HTTP_STATUS_CODE.OK)
+      .send({ encryptionKey, episodes: titleResponse.data.episodes });
+  })
+);
+
 router.post(
-  "/api/titles",
+  `${API_PATH}/titles`,
   asyncHandler(async (req, res) => {
     const requestIp = req.headers["x-forwarded-for"]
       ? req.headers["x-forwarded-for"].split(",")[0]

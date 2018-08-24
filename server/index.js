@@ -8,6 +8,8 @@ dotenv.config();
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 app.use(require("./middleware").middleware);
 
+const { HTTP_STATUS_CODE } = require("./common/constants").constants;
+
 if (process.env.NODE_ENV === "production") {
   const rootDir = path.join(__dirname, "..", "build");
   const indexPath = path.join(rootDir, "index.html");
@@ -19,5 +21,9 @@ if (process.env.NODE_ENV === "production") {
   fs.writeFileSync(indexPath, indexHtml, "utf8");
   app.use(express.static(rootDir));
 }
+
+app.use("*", (req, res) =>
+  res.status(HTTP_STATUS_CODE.OK).send("You went wrong.")
+);
 
 app.listen(process.env.PORT || 4000);
