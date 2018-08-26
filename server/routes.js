@@ -75,6 +75,26 @@ router.get(`${API_PATH}/titles`, async (req, res) => {
     );
 });
 
+router.get(`${API_PATH}/titles/:titleId`, async (req, res) => {
+  const genre = req.query.genre;
+  let titleId = req.params.titleId;
+
+  if (Object.values(GENRE).indexOf(genre) === -1 || isNaN(titleId)) {
+    res.status(HTTP_STATUS_CODE.NO_CONTENT).send();
+
+    return;
+  }
+
+  titleId = parseInt(titleId, 10);
+  const data = JSON.parse(
+    await fs.readFileAsync(path.join(dataDir, `${genre}.json`), "utf8")
+  );
+
+  res
+    .status(HTTP_STATUS_CODE.OK)
+    .send(data.find(title => title.id === titleId));
+});
+
 router.get(
   `${API_PATH}/titles/:titleId/seasons/:seasonId`,
   async (req, res) => {
