@@ -3,11 +3,14 @@
 import React from "react";
 import styled from "styled-components";
 import { compose, withState, withHandlers, shouldUpdate } from "recompose";
+import { HashRouter, Route, Redirect, Switch } from "react-router-dom";
 
 import HowTo from "../components/HowTo";
-import TitleInput from "../components/TitleInput";
 import Resolution from "../components/Resolution";
-import TitleOutput from "../components/TitleOutput";
+import Genre from "../components/Genre";
+import Titles from "../components/Titles";
+import Episodes from "../components/Episodes";
+import RouteNotFound from "../components/RouteNotFound";
 
 import { RESOLUTION } from "../common/constants";
 import type { ServerEpisode } from "../common/types";
@@ -61,13 +64,46 @@ type Props = {
 
 export default enhance(
   ({ data, resolution, bindData, bindResolution }: Props) => (
-    <React.Fragment>
-      <HowTo />
-      <Main>
-        <TitleInput bindData={bindData} />
-        <Resolution resolution={resolution} bindResolution={bindResolution} />
-        <TitleOutput data={data} resolution={resolution} />
-      </Main>
-    </React.Fragment>
+    <HashRouter>
+      <React.Fragment>
+        <HowTo />
+        <Main>
+          <Resolution resolution={resolution} bindResolution={bindResolution} />
+          <Genre />
+          <Switch>
+            <Route exact path="/" render={() => <Redirect to="/phim" />} />
+            <Route
+              key="phim"
+              exact
+              path="/phim"
+              render={props => <Titles {...props} genre="phim" />}
+            />
+            <Route
+              key="tv-show"
+              exact
+              path="/tv-show"
+              render={props => <Titles {...props} genre="tv-show" />}
+            />
+            <Route
+              key="phimWithId"
+              exact
+              path="/phim/:id"
+              render={props => (
+                <Episodes {...props} genre="phim" resolution={resolution} />
+              )}
+            />
+            <Route
+              key="tvShowWithId"
+              exact
+              path="/tv-show/:id"
+              render={props => (
+                <Episodes {...props} genre="tv-show" resolution={resolution} />
+              )}
+            />
+            <Route component={RouteNotFound} />
+          </Switch>
+        </Main>
+      </React.Fragment>
+    </HashRouter>
   )
 );

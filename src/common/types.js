@@ -17,3 +17,10 @@ export type ClientEpisode = {
   url: string,
   watch: string
 };
+
+export type ServerTitle = {
+  id: number,
+  seasonId: number,
+  title: string,
+  backgroundImage: string
+};
