@@ -68,12 +68,7 @@ export default enhance(
               exact
               path="/phim/:id"
               render={props => (
-                <Episodes
-                  {...props}
-                  genre="phim"
-                  resolution={resolution}
-                  bindData={bindData}
-                />
+                <Episodes {...props} genre="phim" bindData={bindData} />
               )}
             />
             <Route
@@ -81,12 +76,7 @@ export default enhance(
               exact
               path="/tv-show/:id"
               render={props => (
-                <Episodes
-                  {...props}
-                  genre="tv-show"
-                  resolution={resolution}
-                  bindData={bindData}
-                />
+                <Episodes {...props} genre="tv-show" bindData={bindData} />
               )}
             />
             <Route component={RouteNotFound} />

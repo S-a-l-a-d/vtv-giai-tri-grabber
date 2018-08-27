@@ -1,26 +1,29 @@
 // @flow
 
 import React from "react";
-import { mapProps } from "recompose";
+import { compose, pure, mapProps } from "recompose";
 
 import LinkBox from "./LinkBox";
 
 import { transliterate } from "../common/helpers";
 
-const enhance = mapProps(({ data, resolution }: any) => ({
-  episodes: Object.keys(data).length
-    ? data.episodes.map(episode => ({
-        id: episode.id,
-        name: episode.name
-          ? transliterate(episode.name)
-          : transliterate(data.title),
-        url: episode.files[0].url.replace(
-          "playlist.m3u8",
-          `chunklist_${resolution}_sleng_${data.encryptionKey}.m3u8`
-        )
-      }))
-    : []
-}));
+const enhance = compose(
+  pure,
+  mapProps(({ data, resolution }: any) => ({
+    episodes: Object.keys(data).length
+      ? data.episodes.map(episode => ({
+          id: episode.id,
+          name: episode.name
+            ? transliterate(episode.name)
+            : transliterate(data.title),
+          url: episode.files[0].url.replace(
+            "playlist.m3u8",
+            `chunklist_${resolution}_sleng_${data.encryptionKey}.m3u8`
+          )
+        }))
+      : []
+  }))
+);
 
 type OutgoingProps = {
   episodes: { id: number, name: string, url: string }[]

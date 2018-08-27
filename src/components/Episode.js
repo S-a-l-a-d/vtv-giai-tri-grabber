@@ -2,7 +2,7 @@
 
 import React from "react";
 import styled from "styled-components";
-import { onlyUpdateForKeys } from "recompose";
+import { shouldUpdate } from "recompose";
 
 import { VTV_GIAI_TRI_URL } from "../common/constants";
 
@@ -25,7 +25,7 @@ const Img = styled.img`
   width: 14rem;
 `;
 
-const enhance = onlyUpdateForKeys(["id"]);
+const enhance = shouldUpdate(() => false);
 
 type Props = {
   name: string,

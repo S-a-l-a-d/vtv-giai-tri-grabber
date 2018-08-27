@@ -2,6 +2,7 @@
 
 import React from "react";
 import styled from "styled-components";
+import { shouldUpdate } from "recompose";
 
 const Div = styled.div`
   display: inline-block;
@@ -22,9 +23,11 @@ type Props = {
   cover: string
 };
 
-export default ({ name, cover }: Props) => (
+const enhance = shouldUpdate(() => false);
+
+export default enhance(({ name, cover }: Props) => (
   <Div>
     <Img alt={name} src={cover} />
     <SubDiv>{name}</SubDiv>
   </Div>
-);
+));

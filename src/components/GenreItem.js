@@ -1,9 +1,10 @@
 // @flow
 
 import React from "react";
-import type { Node } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
+
+import type { Node } from "react";
 
 const Li = styled.li`
   display: inline;
