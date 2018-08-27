@@ -5,11 +5,19 @@ import { compose, pure, mapProps } from "recompose";
 
 import LinkBox from "./LinkBox";
 
+import type { ServerEpisode } from "../common/types";
+
 import { transliterate } from "../common/helpers";
+
+type IncomingProps = {
+  data: { encryptionKey: string, episodes: ServerEpisode[], title: string },
+  resolution: string
+};
 
 const enhance = compose(
   pure,
-  mapProps(({ data, resolution }: any) => ({
+  mapProps(({ data, resolution }: IncomingProps) => ({
+    title: data.title ? transliterate(data.title) : "",
     episodes: Object.keys(data).length
       ? data.episodes.map(episode => ({
           id: episode.id,
@@ -26,18 +34,19 @@ const enhance = compose(
 );
 
 type OutgoingProps = {
+  title: string,
   episodes: { id: number, name: string, url: string }[]
 };
 
 export default enhance(
-  ({ episodes }: OutgoingProps) =>
+  ({ title, episodes }: OutgoingProps) =>
     episodes.length ? (
       <div>
         <LinkBox
           content={episodes
             .map(episode => episode.url)
             .reduce((prev, curr) => `${prev}\r\n${curr}`)}
-          filename={"links.txt"}
+          filename={`${title}.txt`}
         />
         <LinkBox
           content={episodes
@@ -48,7 +57,7 @@ export default enhance(
                 }.mkv"`
             )
             .reduce((prev, curr) => `${prev}\r\n${curr}`, "@echo off\r\n")}
-          filename={"script.cmd"}
+          filename={`${title}.cmd`}
         />
         <LinkBox
           content={episodes
@@ -59,7 +68,7 @@ export default enhance(
                 }.mkv'`
             )
             .reduce((prev, curr) => `${prev}\n${curr}`, "#!/bin/bash\n")}
-          filename={"script.sh"}
+          filename={`${title}.sh`}
         />
       </div>
     ) : (
