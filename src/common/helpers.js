@@ -26,3 +26,7 @@ export const transliterate = (str: string) => {
 
   return str;
 };
+
+export const normalizeFileName = (str: string) => {
+  return str.replace(/[/\\?%*:|"<>]/g, "");
+};
