@@ -12,6 +12,7 @@ import Genre from "../components/Genre";
 import Titles from "../components/Titles";
 import Episodes from "../components/Episodes";
 import RouteNotFound from "../components/RouteNotFound";
+import GitHub from "../components/GitHub";
 
 import { RESOLUTION } from "../common/constants";
 import type { ServerEpisode } from "../common/types";
@@ -42,9 +43,9 @@ type Props = {
 
 export default enhance(
   ({ data, resolution, bindData, bindResolution }: Props) => (
-    <HashRouter>
-      <React.Fragment>
-        <HowTo />
+    <React.Fragment>
+      <HowTo />
+      <HashRouter>
         <Main>
           <LinkSection data={data} resolution={resolution} />
           <Resolution resolution={resolution} bindResolution={bindResolution} />
@@ -82,7 +83,8 @@ export default enhance(
             <Route component={RouteNotFound} />
           </Switch>
         </Main>
-      </React.Fragment>
-    </HashRouter>
+      </HashRouter>
+      <GitHub />
+    </React.Fragment>
   )
 );
