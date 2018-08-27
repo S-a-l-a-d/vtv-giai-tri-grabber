@@ -41,25 +41,20 @@ const enhance = compose(
 
       this.props.bindTitle({ id, seasonId, title, backgroundImage });
 
-      const {
-        encryptionKey,
-        episodes
-      }: {
+      const data: {
         encryptionKey: string,
         episodes: ServerEpisode[]
       } = await (await fetch(
         `${API_PATH}/titles/${id}/seasons/${seasonId}`
       )).json();
 
+      this.props.bindData(Object.assign({}, data, { title }));
+
       this.props.bindEpisodes(
-        episodes.map(episode => ({
+        data.episodes.map(episode => ({
           id: episode.id,
           name: episode.name || title,
           cover: episode.coverMedium || backgroundImage,
-          url: episode.files[0].url.replace(
-            "playlist.m3u8",
-            `chunklist_${this.props.resolution}_sleng_${encryptionKey}.m3u8`
-          ),
           watch: episode.watchLinkV2
         }))
       );
@@ -70,7 +65,8 @@ const enhance = compose(
 );
 
 type Props = {
-  episodes: ClientEpisode[]
+  episodes: ClientEpisode[],
+  bindData: (data: {}) => void
 };
 
 export default enhance(

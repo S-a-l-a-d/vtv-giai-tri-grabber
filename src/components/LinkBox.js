@@ -27,14 +27,12 @@ const SubDiv = styled.div`
 `;
 
 type Props = {
-  heading: string,
   content: string,
   filename: string
 };
 
-export default ({ heading, content, filename }: Props) => (
+export default ({ content, filename }: Props) => (
   <Div>
-    <h3>{heading}</h3>
     <TextArea readOnly value={content} />
     <SubDiv>
       <DownloadLink

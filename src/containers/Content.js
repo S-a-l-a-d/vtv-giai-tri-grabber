@@ -2,10 +2,11 @@
 
 import React from "react";
 import styled from "styled-components";
-import { compose, withState, withHandlers, shouldUpdate } from "recompose";
+import { compose, withState, withHandlers } from "recompose";
 import { HashRouter, Route, Redirect, Switch } from "react-router-dom";
 
 import HowTo from "../components/HowTo";
+import LinkSection from "../components/LinkSection";
 import Resolution from "../components/Resolution";
 import Genre from "../components/Genre";
 import Titles from "../components/Titles";
@@ -29,34 +30,11 @@ const enhance = compose(
     bindResolution: props => resolution => {
       props.updateResolution(resolution);
     }
-  }),
-  shouldUpdate((props, nextProps) => {
-    const initialDataRetrieved =
-      Object.keys(props.data).length === 0 &&
-      Object.keys(nextProps.data).length > 0;
-    const titleChanged =
-      props.data.encryptionKey !== nextProps.data.encryptionKey;
-    const numTitleEpisodesChanged =
-      props.data.encryptionKey === nextProps.data.encryptionKey &&
-      props.data.episodes &&
-      nextProps.data.episodes &&
-      props.data.episodes.length !== nextProps.data.episodes.length;
-    const resolutionChanged = props.resolution !== nextProps.resolution;
-
-    return (
-      initialDataRetrieved ||
-      titleChanged ||
-      numTitleEpisodesChanged ||
-      resolutionChanged
-    );
   })
 );
 
 type Props = {
-  data: {
-    encryptionKey: string,
-    episodes: ServerEpisode[]
-  },
+  data: { encryptionKey: string, episodes: ServerEpisode[], title: string },
   resolution: string,
   bindData: (data: {}) => void,
   bindResolution: (resolution: string) => void
@@ -68,6 +46,7 @@ export default enhance(
       <React.Fragment>
         <HowTo />
         <Main>
+          <LinkSection data={data} resolution={resolution} />
           <Resolution resolution={resolution} bindResolution={bindResolution} />
           <Genre />
           <Switch>
@@ -89,7 +68,12 @@ export default enhance(
               exact
               path="/phim/:id"
               render={props => (
-                <Episodes {...props} genre="phim" resolution={resolution} />
+                <Episodes
+                  {...props}
+                  genre="phim"
+                  resolution={resolution}
+                  bindData={bindData}
+                />
               )}
             />
             <Route
@@ -97,7 +81,12 @@ export default enhance(
               exact
               path="/tv-show/:id"
               render={props => (
-                <Episodes {...props} genre="tv-show" resolution={resolution} />
+                <Episodes
+                  {...props}
+                  genre="tv-show"
+                  resolution={resolution}
+                  bindData={bindData}
+                />
               )}
             />
             <Route component={RouteNotFound} />

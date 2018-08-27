@@ -1,47 +1,69 @@
 // @flow
 
 import React from "react";
+import { mapProps } from "recompose";
 
 import LinkBox from "./LinkBox";
 
-import type { ClientEpisode } from "../common/types";
+import { transliterate } from "../common/helpers";
+
+const enhance = mapProps(({ data, resolution }: any) => ({
+  episodes: Object.keys(data).length
+    ? data.episodes.map(episode => ({
+        id: episode.id,
+        name: episode.name
+          ? transliterate(episode.name)
+          : transliterate(data.title),
+        url: episode.files[0].url.replace(
+          "playlist.m3u8",
+          `chunklist_${resolution}_sleng_${data.encryptionKey}.m3u8`
+        )
+      }))
+    : []
+}));
 
 type OutgoingProps = {
-  episodes: ClientEpisode[]
+  episodes: { id: number, name: string, url: string }[]
 };
 
-export default ({ episodes }: OutgoingProps) => (
-  <div>
-    <LinkBox
-      heading="Danh sách liên kết"
-      content={episodes
-        .map(episode => episode.url)
-        .reduce((prev, curr) => `${prev}\r\n${curr}`)}
-      filename={"links.txt"}
-    />
-    <LinkBox
-      heading="Không biết làm gì với đống đó hả? Thôi cho cái này nè."
-      content={episodes
-        .map(
-          episode =>
-            `ffmpeg -i "${episode.url}" -vcodec "copy" -acodec "copy" "${
-              episode.name
-            }.mkv"`
-        )
-        .reduce((prev, curr) => `${prev}\r\n${curr}`, "@echo off\r\n")}
-      filename={"script.cmd"}
-    />
-    <LinkBox
-      heading="Ủa xài Linux à? Vậy thôi lấy cái này đi."
-      content={episodes
-        .map(
-          episode =>
-            `ffmpeg -i '${episode.url}' -vcodec 'copy' -acodec 'copy' '${
-              episode.name
-            }.mkv'`
-        )
-        .reduce((prev, curr) => `${prev}\n${curr}`, "#!/bin/bash\n")}
-      filename={"script.sh"}
-    />
-  </div>
+export default enhance(
+  ({ episodes }: OutgoingProps) =>
+    episodes.length ? (
+      <div>
+        <LinkBox
+          content={episodes
+            .map(episode => episode.url)
+            .reduce((prev, curr) => `${prev}\r\n${curr}`)}
+          filename={"links.txt"}
+        />
+        <LinkBox
+          content={episodes
+            .map(
+              episode =>
+                `ffmpeg -i "${episode.url}" -vcodec "copy" -acodec "copy" "${
+                  episode.name
+                }.mkv"`
+            )
+            .reduce((prev, curr) => `${prev}\r\n${curr}`, "@echo off\r\n")}
+          filename={"script.cmd"}
+        />
+        <LinkBox
+          content={episodes
+            .map(
+              episode =>
+                `ffmpeg -i '${episode.url}' -vcodec 'copy' -acodec 'copy' '${
+                  episode.name
+                }.mkv'`
+            )
+            .reduce((prev, curr) => `${prev}\n${curr}`, "#!/bin/bash\n")}
+          filename={"script.sh"}
+        />
+      </div>
+    ) : (
+      <div>
+        <LinkBox content={""} filename={"links.txt"} />
+        <LinkBox content={""} filename={"script.cmd"} />
+        <LinkBox content={""} filename={"script.sh"} />
+      </div>
+    )
 );
