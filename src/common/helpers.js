@@ -1,13 +1,5 @@
 // @flow
 
-export const grabTitleData = async (titleUrl: string) => {
-  return await (await fetch("/api/grabber", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ titleUrl })
-  })).json();
-};
-
 export const transliterate = (str: string) => {
   str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
   str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
