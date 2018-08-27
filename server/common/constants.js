@@ -6,7 +6,7 @@ const GENRE = {
   PHIM: "phim",
   TV_SHOW: "tv-show"
 };
-const DATA_UPDATE_ALLOWED_IPS = process.env.DATA_UPDATE_ALLOWED_IPS.split(",");
+const DATA_UPDATE_PASSWORD = process.env.DATA_UPDATE_PASSWORD;
 const HTTP_STATUS_CODE = {
   OK: 200,
   NO_CONTENT: 204,
@@ -20,6 +20,6 @@ exports.constants = {
   VTV_GIAI_TRI_API_PATH,
   ENCRYPTION_KEY_PATTERN,
   GENRE,
-  DATA_UPDATE_ALLOWED_IPS,
+  DATA_UPDATE_PASSWORD,
   HTTP_STATUS_CODE
 };

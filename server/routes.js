@@ -10,7 +10,7 @@ const {
   VTV_GIAI_TRI_API_PATH,
   ENCRYPTION_KEY_PATTERN,
   GENRE,
-  DATA_UPDATE_ALLOWED_IPS,
+  DATA_UPDATE_PASSWORD,
   HTTP_STATUS_CODE
 } = require("./common/constants").constants;
 const { getSortedTitles } = require("./common/helpers").helpers;
@@ -91,18 +91,10 @@ router.get(
 );
 
 router.post(`${API_PATH}/titles`, async (req, res) => {
-  const requestIp = req.headers["x-forwarded-for"]
-    ? req.headers["x-forwarded-for"].split(",")[0]
-    : req.connection.remoteAddress;
+  const password = req.body.password;
 
-  if (
-    DATA_UPDATE_ALLOWED_IPS.indexOf(requestIp) === -1 &&
-    process.env.NODE_ENV !== "development" &&
-    requestIp !== "::1"
-  ) {
-    res.status(HTTP_STATUS_CODE.FORBIDDEN).send("Forbidden");
-
-    return;
+  if (password !== DATA_UPDATE_PASSWORD) {
+    return res.status(HTTP_STATUS_CODE.FORBIDDEN).send("Forbidden");
   }
 
   if (!(await fs.existsAsync(dataDir))) await fs.mkdirAsync(dataDir);

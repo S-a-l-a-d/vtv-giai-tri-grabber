@@ -10,6 +10,7 @@ const routes = require("./routes").routes;
 
 app.use(cors({ origin: process.env.ORIGIN, methods: "GET,POST" }));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(
   session({
     resave: true,
