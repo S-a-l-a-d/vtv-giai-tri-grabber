@@ -42,7 +42,6 @@ const enhance = compose(
 
 type Props = {
   match: { path: string },
-  genre: string,
   titles: ServerTitle[]
 };
 

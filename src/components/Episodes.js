@@ -65,8 +65,7 @@ const enhance = compose(
 );
 
 type Props = {
-  episodes: ClientEpisode[],
-  bindData: (data: {}) => void
+  episodes: ClientEpisode[]
 };
 
 export default enhance(
