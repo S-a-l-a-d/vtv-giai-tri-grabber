@@ -21,9 +21,7 @@ router.get(`${API_PATH}/titles`, async (req, res) => {
   const genre = req.query.genre;
 
   if (Object.values(GENRE).indexOf(genre) === -1) {
-    res.status(HTTP_STATUS_CODE.NO_CONTENT).send();
-
-    return;
+    return res.status(HTTP_STATUS_CODE.NO_CONTENT).send();
   }
 
   res
@@ -40,9 +38,7 @@ router.get(`${API_PATH}/titles/:titleId`, async (req, res) => {
   let titleId = req.params.titleId;
 
   if (Object.values(GENRE).indexOf(genre) === -1 || isNaN(titleId)) {
-    res.status(HTTP_STATUS_CODE.NO_CONTENT).send();
-
-    return;
+    return res.status(HTTP_STATUS_CODE.NO_CONTENT).send();
   }
 
   titleId = parseInt(titleId, 10);
@@ -62,9 +58,9 @@ router.get(
     const seasonId = req.params.seasonId;
 
     if (isNaN(titleId) || isNaN(seasonId)) {
-      res.status(HTTP_STATUS_CODE.OK).send({ encryptionKey: "", episodes: [] });
-
-      return;
+      return res
+        .status(HTTP_STATUS_CODE.OK)
+        .send({ encryptionKey: "", episodes: [] });
     }
 
     const titleResponse = await (await fetch(
@@ -73,9 +69,9 @@ router.get(
     )).json();
 
     if (titleResponse.code !== HTTP_STATUS_CODE.OK) {
-      res.status(HTTP_STATUS_CODE.OK).send({ encryptionKey: "", episodes: [] });
-
-      return;
+      return res
+        .status(HTTP_STATUS_CODE.OK)
+        .send({ encryptionKey: "", episodes: [] });
     }
 
     const playlistResponse = await (await fetch(
