@@ -24,6 +24,10 @@ router.get(`${API_PATH}/titles`, async (req, res) => {
     return res.status(HTTP_STATUS_CODE.NO_CONTENT).send();
   }
 
+  if (!(await fs.existsAsync(dataDir))) {
+    return res.status(HTTP_STATUS_CODE.OK).send([]);
+  }
+
   res
     .status(HTTP_STATUS_CODE.OK)
     .send(
