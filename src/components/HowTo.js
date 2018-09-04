@@ -38,7 +38,7 @@ export default () => (
             Thêm đường dẫn ffmpeg vào Environment Variables nếu đang xài Windows
             và muốn tiện lợi theo{" "}
             <a
-              href="https://www.computerhope.com/issues/ch000549.htm"
+              href="https://superuser.com/a/284351"
               target="_blank"
               rel="noopener noreferrer"
             >
