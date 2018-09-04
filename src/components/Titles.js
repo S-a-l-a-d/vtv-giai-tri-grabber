@@ -50,7 +50,11 @@ export default enhance(
     titles.length ? (
       <div>
         {titles.map(title => (
-          <StyledLink key={title.id} to={`${match.path}/${title.id}`}>
+          <StyledLink
+            key={title.id}
+            to={`${match.path}/${title.id}`}
+            title={title.description}
+          >
             <Title name={title.title} cover={title.backgroundImage} />
           </StyledLink>
         ))}

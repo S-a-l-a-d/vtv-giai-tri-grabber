@@ -22,5 +22,6 @@ export type ServerTitle = {
   id: number,
   seasonId: number,
   title: string,
+  description: string,
   backgroundImage: string
 };
